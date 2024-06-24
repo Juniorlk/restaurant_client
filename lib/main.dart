@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_client/accessoires_profile/favoris.dart' ;
 
 void main() {
   runApp(MyApp());
@@ -10,6 +11,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Restaurant',
       home: ProfilePage(),
+      initialRoute: '/',
+      routes: {
+        '/favoris': (context) => FavoriteRestaurantsPage(),
+      },
     );
   }
 }
@@ -42,18 +47,30 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 ListTile(
                   leading: Icon(Icons.favorite),
-                  title: Text('My Favorite'),
+                  title: Text('Mes Favoris'),
                   trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/favoris');
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.local_offer),
-                  title: Text('Special Offers'),
+                  title: Text('Offres Speciales'),
                   trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/my-favorite');
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.credit_card),
-                  title: Text('Payements Methods'),
+                  title: Text('Mode de Payements'),
                   trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/my-favorite');
+                  },
                 ),
                 // Ligne horizontale
                 Divider(
@@ -66,25 +83,42 @@ class _ProfilePageState extends State<ProfilePage> {
                   leading: Icon(Icons.person),
                   title: Text('Profile'),
                   trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/my-favorite');
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.location_on),
                   title: Text('Address'),
                   trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/my-favorite');
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.notifications),
                   title: Text('Notification'),
                   trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/my-favorite');
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.lock),
-                  title: Text('Security'),
+                  title: Text('Securites'),
                   trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/my-favorite');
+                  },
+
                 ),
                 ListTile(
                   leading: Icon(Icons.language),
-                  title: Text('Language '),
+                  title: Text('Langues '),
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),
                 ListTile(
@@ -99,22 +133,25 @@ class _ProfilePageState extends State<ProfilePage> {
                   leading: Icon(Icons.help),
                   title: Text('Help'),
                   trailing: Icon(Icons.arrow_forward_ios),
-                ),
-                ListTile(
-                  leading: Icon(Icons.person_add),
-                  title: Text('Invite Friends'),
-                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/my-favorite');
+                  },
                 ),
                 ListTile(
                   leading: Icon(
                     Icons.logout,
                     color: isDarkMode ? Colors.red : null,
                   ),
-                  title: Text('Logout'),
+                  title: Text('Deconnexion'),
                   trailing: Icon(
                     Icons.arrow_forward_ios,
                     color: isDarkMode ? Colors.red : null,
                   ),
+                  onTap: () {
+                    // Naviguer vers la page "My Favorite"
+                    Navigator.pushNamed(context, '/my-favorite');
+                  },
                 ),
               ],
             ),
