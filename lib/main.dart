@@ -55,15 +55,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.local_offer),
-                  title: Text('Offres Speciales'),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Naviguer vers la page "My Favorite"
-                    Navigator.pushNamed(context, '/my-favorite');
-                  },
-                ),
-                ListTile(
                   leading: Icon(Icons.credit_card),
                   title: Text('Mode de Payements'),
                   trailing: Icon(Icons.arrow_forward_ios),
@@ -74,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 // Ligne horizontale
                 Divider(
-                  color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                  color: isDarkMode ? Colors.grey[600] : Colors.grey[300],
                   thickness: 1,
                   indent: 16,
                   endIndent: 16,
@@ -82,15 +73,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ListTile(
                   leading: Icon(Icons.person),
                   title: Text('Profile'),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Naviguer vers la page "My Favorite"
-                    Navigator.pushNamed(context, '/my-favorite');
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.location_on),
-                  title: Text('Address'),
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
                     // Naviguer vers la page "My Favorite"
