@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:restaurant_client/views/constants.dart';
 import 'auth_service.dart';
 import '../views/login_page.dart';
 
 class SessionTimeoutManager {
-  static const int sessionTimeout = 172800; // Timeout duration in seconds
+  static const int sessionTimeout = Timeout; // Timeout duration in seconds
   Timer ?_timer;
 
   void initialize(BuildContext context) {

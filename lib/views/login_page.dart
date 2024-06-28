@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_client/views/home_page.dart';
 import 'register_page.dart';
 import '../services/auth_service.dart';
-import './home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -92,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 250.0),
+            padding: const EdgeInsets.only(top: 200.0),
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -142,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ? 'Password is required'
                                       : null,
                                   onSaved: (value) => _password = value!,
-                                  obscureText: true,
+                                  obscureText: false,
                                 ),
                                 const SizedBox(height: 10),
                                 Center(
