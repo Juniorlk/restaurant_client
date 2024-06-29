@@ -10,6 +10,34 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  late String _firstname, _lastname, _phone, _email, _password;
+
+  void _register() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        _isLoading = true;
+      });
+      // print(_firstname + _lastname + _phone + _email + _password);
+      // Implement your registration logic here using AuthService
+      bool success = await AuthService.register(_firstname, _lastname, _phone, _email, _password);
+      setState(() {
+        _isLoading = false;
+      });
+      if (success) {
+        // Navigate to login or home page after successful registration
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+      } else {
+        // Show an error message if registration fails
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registration failed. Please try again.')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,10 +58,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 40),
-                  Column(
-                    children: [
-                      Center(
-                        child: Text(
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
                           'Welcome !!!',
                           style: TextStyle(
                             fontSize: 30,
@@ -41,9 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      Center(
-                        child: Text(
+                        Text(
                           'Sign Up Here !',
                           style: TextStyle(
                             fontSize: 20,
@@ -51,8 +77,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(height: 5),
                 ],
@@ -72,129 +98,137 @@ class _RegisterPageState extends State<RegisterPage> {
               height: double.infinity,
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 18.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                   // child: _isLoading
-                    //    ? const CircularProgressIndicator()
-                     //   : Form(
-                     //       key: _formKey,
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                Image.asset('assets/images/resto.png', width: 100, height: 100,),
-                                TextFormField(
-                                  decoration:
-                                      const InputDecoration(labelText: 'UserName'),
-                                  validator: (value) => value!.isEmpty
-                                      ? 'Email is required'
-                                      : null,
-                               //   onSaved: (value) => _email = value!,
-                                ),
-                                TextFormField(
-                                  decoration:
-                                      const InputDecoration(labelText: 'Phone Number'),
-                                  validator: (value) => value!.isEmpty
-                                      ? 'Email is required'
-                                      : null,
-                               //   onSaved: (value) => _email = value!,
-                                ),
-                                TextFormField(
-                                  decoration:
-                                      const InputDecoration(labelText: 'Email', suffixIcon: Icon(Icons.check, color: Colors.grey),),
-                                  validator: (value) => value!.isEmpty
-                                      ? 'Email is required'
-                                      : null,
-                               //   onSaved: (value) => _email = value!,
-                                ),
-                                TextFormField(
-                                  decoration:
-                                      const InputDecoration(labelText: 'Password',  suffixIcon: Icon(Icons.visibility_off, color: Colors.grey),),
-                                  validator: (value) => value!.isEmpty
-                                      ? 'Password is required'
-                                      : null,
-                                //  onSaved: (value) => _password = value!,
-                                  obscureText: true,
-                                ),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: (){},
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.white, 
-                                    backgroundColor: Colors.green, 
-                                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8), 
-                                    ),
-                                  ),
-                                  child: const Text('Register'),
-                                ),
-                               
-                                const SizedBox(height: 20),
-                                 Center(
-                                  child: Column(
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : Form(
+                          key: _formKey,
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: [
+                              Image.asset('assets/logo3.png', height: 120),
+                              Column(
+                                children: [
+                                  Row(
                                     children: [
-                                      Text(
-                                        'Sign in with',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black,
-                                        ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: TextFormField(
+                                            decoration: const InputDecoration(labelText: 'FirstName'),
+                                            validator: (value) => value!.isEmpty ? 'Firstname is required' : null,
+                                            onSaved: (value) => _firstname = value!,
+                                          ),
                                       ),
-                                      Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: TextFormField(
+                                                decoration: const InputDecoration(labelText: 'LastName'),
+                                                validator: (value) => value!.isEmpty ? 'Lastname is required' : null,
+                                                onSaved: (value) => _lastname = value!,
+                                              ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              
+                              
+                              TextFormField(
+                                decoration: const InputDecoration(labelText: 'Phone Number'),
+                                validator: (value) => value!.isEmpty ? 'Phone number is required' : null,
+                                onSaved: (value) => _phone = value!,
+                              ),
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: 'Email',
+                                  suffixIcon: Icon(Icons.check, color: Colors.grey),
+                                ),
+                                validator: (value) => value!.isEmpty ? 'Email is required' : null,
+                                onSaved: (value) => _email = value!,
+                                
+                              ),
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: 'Password',
+                                  suffixIcon: Icon(Icons.visibility_off, color: Colors.grey),
+                                ),
+                                validator: (value) => value!.isEmpty ? 'Password is required' : null,
+                                onSaved: (value) => _password = value!,
+                                obscureText: true,
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: _register,
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.green,
+                                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: const Text('Register'),
+                              ),
+                              const SizedBox(height: 20),
+                              Center(
+                                child: Column(
                                   children: [
-                                    IconButton(
-                                      icon: Image.asset(
-                                          'assets/images/google.png', width: 35, height: 35,),
-                                      // iconSize: 5,
-                                      onPressed: () {
-                                        // Handle Google sign in
-                                      },
+                                    const Text(
+                                      'Sign in with',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
                                     ),
-                                    SizedBox(width: 20),
-                                    IconButton(
-                                      icon: Image.asset('assets/images/facebook.png', width: 35, height: 35,),
-                                      iconSize: 5,
-                                      onPressed: () {
-                                        // Handle Facebook sign in
-                                      },
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          icon: Image.asset('assets/images/google.png', width: 35, height: 35),
+                                          onPressed: () {
+                                            // Handle Google sign in
+                                          },
+                                        ),
+                                        const SizedBox(width: 20),
+                                        IconButton(
+                                          icon: Image.asset('assets/images/facebook.png', width: 35, height: 35),
+                                          onPressed: () {
+                                            // Handle Facebook sign in
+                                          },
+                                        ),
+                                        const SizedBox(width: 20),
+                                        IconButton(
+                                          icon: Image.asset('assets/images/twitter.png', width: 35, height: 35),
+                                          onPressed: () {
+                                            // Handle Twitter sign in
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(width: 20),
-                                    IconButton(
-                                      icon: Image.asset(
-                                          'assets/images/twitter.png', width: 35, height: 35,),
-                                      iconSize: 5,
+                                    TextButton(
                                       onPressed: () {
-                                        // Handle Twitter sign in
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => LoginPage()),
+                                        );
                                       },
+                                      child: const Text("Already registered? Login here"),
                                     ),
                                   ],
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LoginPage()));
-                                  },
-                                  child: const Text("Already register? login here"),
-                                ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
                           ),
-                  ),
+                        ),
                 ),
               ),
             ),
-        //  ),
+          ),
         ],
       ),
     );

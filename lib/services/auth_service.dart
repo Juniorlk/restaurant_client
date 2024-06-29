@@ -19,13 +19,15 @@ class AuthService {
       },
       body: data,
     );
-    print(response.statusCode);
-    print(data);
+    // print(response.statusCode);
+    // print(data);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', data['access_token']);
       await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('client', jsonEncode(data['client']));
+      // print(data['client']);
       return true;
     } else {
       debugPrint("pas bon");
@@ -33,18 +35,23 @@ class AuthService {
     }
   }
 
-  static Future<bool> register(String name, String email, String password) async {
+  static Future<bool> register(String firstname,String lastname, String phone, String email, String password) async {
+      var data = {
+        "Nom": firstname,
+        "Prenom": lastname,
+        "AdresseMail": email,
+        "MotDePasse": password,
+        "Telephone": phone,
+      };
+      // print(data);
     final response = await http.post(
       Uri.parse('$baseUrl/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+      headers: {
+        'Accept': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'Nom': name,
-        'AdresseMail': email,
-        'MotDePasse': password,
-      }),
+      body: data,
     );
+    // print(response.statusCode);
 
     return response.statusCode == 200;
   }

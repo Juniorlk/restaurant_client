@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:foodapp/views/constants.dart';
 import './widgets/onboarding_page.dart';
 import './login_page.dart';
 
@@ -16,6 +17,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF277548),
       body: Stack(
         children: [
           PageView(
@@ -28,6 +30,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             children: <Widget>[
               OnboardingPage(
                 image: 'assets/images/splash_screen1.png',
+                title: 'Bienvenue à notre service de commande et de réservation!',
+                description:
+                '',
+                onStartPressed: ()=>{},
+                first: true,
+              ),
+              OnboardingPage(
+                image: 'assets/images/splash_screen1.png',
                 title: 'Commandez facilement',
                 description:
                 'Avec notre application, parcourez notre vaste menu et commandez vos plats préférés en quelques clics.',
@@ -38,13 +48,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 title: 'Réservez votre table',
                 description:
                 'Réservez une table à l’avance dans votre restaurant préféré et profitez d’une expérience culinaire sans tracas.',
-                onStartPressed: ()=>{},
-              ),
-              OnboardingPage(
-                image: 'assets/images/splash_screen1.png',
-                title: 'Livraison rapide',
-                description:
-                'Profitez de notre service de livraison rapide pour recevoir vos commandes directement à votre porte.',
                 showStartButton: true,
                 onStartPressed: (){
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
@@ -67,7 +70,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     width: (index == _currentPage) ? 30 : 10,
                     margin: EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
-                      color: (index == _currentPage) ? Colors.blue : Colors.grey,
+                      color: (index == _currentPage) ? Color(primaryColor) : Colors.grey,
                       borderRadius: BorderRadius.circular(5),
                     ),
                   );
