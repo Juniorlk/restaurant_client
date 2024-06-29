@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodapp/views/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'onboarding_screen.dart';
 import 'home_page.dart';
@@ -42,40 +43,54 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            'assets/images/splash_screen.png',
-            fit: BoxFit.cover,
-          ),
-          const Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Center(
-                child: CircularProgressIndicator(), // Replace with your animated splash screen
+      body: Container(
+        color: Color(0xFF277548),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Image.asset(
+                'assets/logo2.png',
+                fit: BoxFit.cover,
+                width: 300,
+                height: 300,
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Center(
-                  child: Text(
-                    'Bienvenue à notre service de commande et de réservation!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
+            ),
+            Container(
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  
+                  // Center(
+                  //     child: Text(
+                  //       'Bienvenue à notre service de commande et de réservation!',
+                  //       style: TextStyle(
+                  //         fontSize: 24,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: Color(primaryColor),
+                  //       ),
+                  //       textAlign: TextAlign.center,
+                  //     ),
+                  // ),
+                  SizedBox(
+                    height: 30,
                   ),
+                  Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3,
+                      
+                    ), // Replace with your animated splash screen
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 70,
-              ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      )
     );
   }
 }

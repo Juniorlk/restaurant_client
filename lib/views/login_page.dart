@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_client/views/home_page.dart';
+import 'package:foodapp/views/home_page.dart';
 import 'register_page.dart';
 import '../services/auth_service.dart';
 
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: ListView(
                               shrinkWrap: true,
                               children: [
-                                Image.asset('assets/images/resto.png', width: 100, height: 100,),
+                                Image.asset('assets/logo3.png', height: 180),
                                  ValueListenableBuilder<bool>(
                                   valueListenable: _isEmailValid,
                                   builder: (context, isValid, child) {

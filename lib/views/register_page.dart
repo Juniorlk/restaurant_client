@@ -107,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: ListView(
                             shrinkWrap: true,
                             children: [
-                              Image.asset('assets/images/resto.png', width: 100, height: 100),
+                              Image.asset('assets/logo3.png', height: 120),
                               Column(
                                 children: [
                                   Row(

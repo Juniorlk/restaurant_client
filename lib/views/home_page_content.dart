@@ -9,6 +9,8 @@ import '../models/plat_model.dart';
 import 'components/profile_icon.dart';
 import 'constants.dart';
 import '../services/session_timeout_manager.dart';
+import 'detail_page.dart';
+import 'widgets/categorie_list.dart';
 
 class HomePageContent extends StatefulWidget {
   @override
@@ -20,7 +22,7 @@ class _HomePageContentState extends State<HomePageContent> {
   final CategorieService _categorieService = CategorieService();
   final SessionTimeoutManager _sessionTimeoutManager = SessionTimeoutManager();
   final TextEditingController _searchController = TextEditingController();
-  int _currentIndex = 0;
+  // int _currentIndex = 0;
   String _userName = '';
   
   List<Category> _categories = [];
@@ -53,6 +55,7 @@ class _HomePageContentState extends State<HomePageContent> {
         _categories = categories;
         _promotions = promotions;
         _popularDishes = popularDishes;
+        _searchResults = popularDishes;
       });
     } catch (e) {
       // Handle error
@@ -61,22 +64,27 @@ class _HomePageContentState extends State<HomePageContent> {
   }
 
   Future<void> _loadUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? clientData = prefs.getString('client');
-    if (clientData != null) {
-      Map<String, dynamic> client = jsonDecode(clientData);
-      setState(() {
-        _userName = client['Prenom'];
-      });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? clientData = prefs.getString('client');
+      if (clientData != null) {
+        Map<String, dynamic> client = jsonDecode(clientData);
+        setState(() {
+          _userName = client['Prenom'];
+        });
+      }
+    } catch (e) {
+      // Handle error
+      print(e);
     }
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    // Navigate to respective pages if needed
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _currentIndex = index;
+  //   });
+  //   // Navigate to respective pages if needed
+  // }
 
   Future<void> _refresh() async {
     await _fetchData();
@@ -172,7 +180,10 @@ class _HomePageContentState extends State<HomePageContent> {
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: Container(
+            padding: EdgeInsets.all(10),
+            child: Image.asset('assets/icons/search-64.png', width: 14, height: 14)
+            ),
               hintText: 'Search dishes',
               filled: true,
               hintStyle: TextStyle(color: Color(0xFF6A6969)),
@@ -207,34 +218,35 @@ class _HomePageContentState extends State<HomePageContent> {
             ],
           ),
           SizedBox(height: 8),
-          Container(
-            height: 160,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 4,
-                mainAxisSpacing: 4,
-                childAspectRatio: 3,
-                mainAxisExtent: 70,
-              ),
-              scrollDirection: Axis.vertical,
-              itemCount: _categories.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        // _categories[index].imageUrl
-                        Image.network("https://cdn.pixabay.com/photo/2017/03/23/19/57/asparagus-2169305_1280.jpg", width: 60, height: 45, fit: BoxFit.cover),
-                        Text(_categories[index].name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+          CategoryGrid(categories: _categories),
+          // Container(
+          //   height: 160,
+          //   child: GridView.builder(
+          //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          //       crossAxisCount: 4,
+          //       crossAxisSpacing: 4,
+          //       mainAxisSpacing: 4,
+          //       childAspectRatio: 3,
+          //       mainAxisExtent: 70,
+          //     ),
+          //     scrollDirection: Axis.vertical,
+          //     itemCount: _categories.length,
+          //     itemBuilder: (context, index) {
+          //       return Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          //         child: Center(
+          //           child: Column(
+          //             children: [
+          //               // _categories[index].imageUrl
+          //               Image.network("https://cdn.pixabay.com/photo/2017/03/23/19/57/asparagus-2169305_1280.jpg", width: 60, height: 45, fit: BoxFit.cover),
+          //               Text(_categories[index].name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+          //             ],
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
           SizedBox(height: 15),
           Text('Promotions', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           SizedBox(height: 6),
@@ -250,7 +262,7 @@ class _HomePageContentState extends State<HomePageContent> {
                         Stack(
                           children: [
                             // dish.imageUrl
-                            Image.network("https://cdn.pixabay.com/photo/2017/03/23/19/57/asparagus-2169305_1280.jpg", width: double.infinity, height: 100, fit: BoxFit.cover),
+                            Image.network("${baseUrl}/photos-${dish.id}", width: double.infinity, height: 100, fit: BoxFit.cover),
                             Positioned(
                               top: 8,
                               left: 8,
@@ -311,21 +323,29 @@ class _HomePageContentState extends State<HomePageContent> {
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.only(bottom: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  color: Colors.white,
-                ),
-                child: ListTile(
-                  tileColor: Color.fromARGB(255, 92, 195, 66),
-                  // ${baseUrl}/photos-${_searchResults[index].id}
-                  leading: Image.network("https://cdn.pixabay.com/photo/2017/03/23/19/57/asparagus-2169305_1280.jpg"),
-                  title: Text(_searchResults[index].name),
-                  subtitle: Text('\$${_searchResults[index].price}'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.favorite_border, color: Color(favoriteColor)),
-                    onPressed: () {
-                      // Handle add to favorites
-                    },
+                  decoration: BoxDecoration(
+                    // borderRadius: BorderRadius.circular(12.0),
+                    color: Color.fromARGB(255, 92, 195, 66),
+                  ),
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 0.1, top: 0.1, left: 0, right: 0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    color: Colors.white,
+                  ),
+                  child: ListTile(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(Plat: _searchResults[index]))),
+                    // tileColor: Colors.white,
+                    // ${baseUrl}/photos-${_searchResults[index].id}
+                    leading: Image.network("${baseUrl}/photos-${_searchResults[index].id}"),
+                    title: Text(_searchResults[index].name),
+                    subtitle: Text('\$${_searchResults[index].price}'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.favorite_border, color: Color(favoriteColor)),
+                      onPressed: () {
+                        // Handle add to favorites
+                      },
+                    ),
                   ),
                 ),
               );
@@ -351,3 +371,4 @@ class _HomePageContentState extends State<HomePageContent> {
   );
 }
 }
+

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/plat_model.dart';
-import 'package:restaurant_client/views/constants.dart';
+import 'package:foodapp/views/constants.dart';
 
 
 class PlatService {

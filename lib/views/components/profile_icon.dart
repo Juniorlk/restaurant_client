@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_client/views/constants.dart';
 
 class ProfileIcon extends StatelessWidget {
   final String nom;
   const ProfileIcon({super.key, required this.nom});
   String profileLetter() {
     if (nom.isEmpty) {
-      return "Guest User";
+      return "U";
     }
 
     return nom[0].toUpperCase();
@@ -19,21 +18,21 @@ class ProfileIcon extends StatelessWidget {
       // width: 30,
       // height: 30,
       // margin: const EdgeInsets.only(right: 10),
-      clipBehavior: Clip.antiAlias,
+      // clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: Color(primaryColor),
+        color: Color.fromARGB(206, 27, 172, 75),
       ),
       child: Column(
         children: [
           SizedBox(
-            height: 4,
+            height: 5,
           ),
           Text(profileLetter(), textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                
+                color: Color(0xFF09596B),
               )),
         ],
       ),

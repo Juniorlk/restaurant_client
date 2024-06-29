@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_client/views/home_page_content.dart';
-import 'package:restaurant_client/views/login_page.dart';
-import 'home_page.dart';
+import 'package:foodapp/views/commande_page_content.dart';
+import 'package:foodapp/views/constants.dart';
+import 'package:foodapp/views/home_page_content.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:foodapp/views/profile_page_content.dart';
+import 'package:foodapp/views/reservation_page_content.dart';
 
 
 
@@ -18,23 +20,37 @@ class HomePage extends StatelessWidget {
     List<Widget> _buildScreens(){
       return [
         HomePageContent(),
-        LoginPage(),
+        CommandePage(),
+        ReservationPage(),
+        ProfilePage(),
       ];
     };
 
     _navBarsItems(){
       return [
         PersistentBottomNavBarItem(
-          icon: Icon(Icons.bus_alert),
-          title: ("Voyages"),
-          activeColorPrimary: Color.fromARGB(255,255, 92, 0),
-          inactiveColorPrimary: Colors.white
+          icon: Icon(Icons.home_rounded),
+          title: ("Home"),
+          activeColorPrimary: Color(primaryColor),
+          inactiveColorPrimary: Colors.grey
         ),
         PersistentBottomNavBarItem(
-          icon: Icon(Icons.list),
-          title: ("Reservations"),
-          activeColorPrimary: Color.fromARGB(255,255, 92, 0),
-          inactiveColorPrimary: Colors.white
+          icon: Icon(Icons.restaurant_menu),
+          title: ("Commandes"),
+          activeColorPrimary: Color(primaryColor),
+          inactiveColorPrimary: Colors.grey.shade600
+        ),
+        PersistentBottomNavBarItem(
+          icon: Icon(Icons.table_bar_rounded),
+          title: ("Reservation"),
+          activeColorPrimary: Color(primaryColor),
+          inactiveColorPrimary: Colors.grey.shade600
+        ),
+        PersistentBottomNavBarItem(
+          icon: Icon(Icons.person_rounded),
+          title: ("Profile"),
+          activeColorPrimary: Color(primaryColor),
+          inactiveColorPrimary: Colors.grey.shade600
         ),
         // PersistentBottomNavBarItem(
         //   icon: Icon(Icons.home),
@@ -62,7 +78,7 @@ class HomePage extends StatelessWidget {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: Color.fromARGB(255, 5, 25, 76),
+      backgroundColor: Colors.grey.shade100,
       handleAndroidBackButtonPress: true,
       hideNavigationBarWhenKeyboardShows: true,
       decoration: NavBarDecoration(
