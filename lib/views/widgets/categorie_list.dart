@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/categorie_model.dart';
+import '../constants.dart';
 
 class CategoryGrid extends StatelessWidget {
   final List<Category> categories;
@@ -30,7 +31,7 @@ class CategoryGrid extends StatelessWidget {
                 child: Column(
                   children: [
                     Image.network(
-                      "https://cdn.pixabay.com/photo/2017/03/23/19/57/asparagus-2169305_1280.jpg",
+                      "${baseUrl}/categories_photo-${category.id}",
                       width: 60,
                       height: 45,
                       fit: BoxFit.cover,
