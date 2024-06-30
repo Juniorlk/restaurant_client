@@ -62,7 +62,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       appBar: AppBar(
         title: Text('Profile'),
         leading: Container(
@@ -89,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
                     // Naviguer vers la page "My Favorite"
-                    Navigator.pushNamed(context, '/favoris');
+                    // Navigator.pushNamed(context, '/favoris');
                   },
                 ),
                 ListTile(
