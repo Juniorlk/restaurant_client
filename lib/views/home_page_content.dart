@@ -4,13 +4,16 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:convert';
 import '../services/categorie_service.dart';
 import '../services/plat_service.dart';
+import '../services/cart_service.dart';
 import '../models/categorie_model.dart';
 import '../models/plat_model.dart';
+import '../models/cart_item_model.dart';
 import 'components/profile_icon.dart';
 import 'constants.dart';
 import '../services/session_timeout_manager.dart';
 import 'detail_page.dart';
 import 'widgets/categorie_list.dart';
+import 'cart_page.dart';
 
 class HomePageContent extends StatefulWidget {
   @override
@@ -20,6 +23,7 @@ class HomePageContent extends StatefulWidget {
 class _HomePageContentState extends State<HomePageContent> {
   final PlatService _platService = PlatService();
   final CategorieService _categorieService = CategorieService();
+  final CartService _cartService = CartService();
   final SessionTimeoutManager _sessionTimeoutManager = SessionTimeoutManager();
   final TextEditingController _searchController = TextEditingController();
   // int _currentIndex = 0;
@@ -79,13 +83,6 @@ class _HomePageContentState extends State<HomePageContent> {
     }
   }
 
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _currentIndex = index;
-  //   });
-  //   // Navigate to respective pages if needed
-  // }
-
   Future<void> _refresh() async {
     await _fetchData();
     await _loadUserData();
@@ -98,6 +95,15 @@ class _HomePageContentState extends State<HomePageContent> {
         return dish.name.toLowerCase().contains(query);
       }).toList();
     });
+  }
+
+  Future<void> _addToCart(Dish dish) async {
+    final CartItem cartItem = CartItem(
+      id: dish.id,
+      name: dish.name,
+      price: dish.price,
+    );
+    await _cartService.addToCart(cartItem);
   }
 
   @override
@@ -122,15 +128,15 @@ class _HomePageContentState extends State<HomePageContent> {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.notifications),
+              icon: Icon(Icons.notifications, color: Color(primaryColor)),
               onPressed: () {
                 // Handle notifications
               },
             ),
             IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: Icon(Icons.shopping_cart, color: Color(primaryColor)),
               onPressed: () {
-                // Handle cart
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CartPage()));
               },
             ),
           ],
@@ -139,29 +145,6 @@ class _HomePageContentState extends State<HomePageContent> {
           onRefresh: _refresh,
           child: _buildBody(),
         ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   currentIndex: _currentIndex,
-        //   onTap: _onItemTapped,
-        //   items: const <BottomNavigationBarItem>[
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.home),
-        //       label: 'Home',
-        //       backgroundColor: Color(primaryColor),
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.list),
-        //       label: 'Orders',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.book),
-        //       label: 'Reservations',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.person),
-        //       label: 'Profile',
-        //     ),
-        //   ],
-        // ),
       ),
     );
   }
@@ -181,9 +164,9 @@ class _HomePageContentState extends State<HomePageContent> {
             controller: _searchController,
             decoration: InputDecoration(
               prefixIcon: Container(
-            padding: EdgeInsets.all(10),
-            child: Image.asset('assets/icons/search-64.png', width: 14, height: 14)
-            ),
+                padding: EdgeInsets.all(10),
+                child: Image.asset('assets/icons/search-64.png', width: 14, height: 14),
+              ),
               hintText: 'Search dishes',
               filled: true,
               hintStyle: TextStyle(color: Color(0xFF6A6969)),
@@ -219,34 +202,6 @@ class _HomePageContentState extends State<HomePageContent> {
           ),
           SizedBox(height: 8),
           CategoryGrid(categories: _categories),
-          // Container(
-          //   height: 160,
-          //   child: GridView.builder(
-          //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          //       crossAxisCount: 4,
-          //       crossAxisSpacing: 4,
-          //       mainAxisSpacing: 4,
-          //       childAspectRatio: 3,
-          //       mainAxisExtent: 70,
-          //     ),
-          //     scrollDirection: Axis.vertical,
-          //     itemCount: _categories.length,
-          //     itemBuilder: (context, index) {
-          //       return Padding(
-          //         padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          //         child: Center(
-          //           child: Column(
-          //             children: [
-          //               // _categories[index].imageUrl
-          //               Image.network("https://cdn.pixabay.com/photo/2017/03/23/19/57/asparagus-2169305_1280.jpg", width: 60, height: 45, fit: BoxFit.cover),
-          //               Text(_categories[index].name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-          //             ],
-          //           ),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
           SizedBox(height: 15),
           Text('Promotions', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           SizedBox(height: 6),
@@ -261,7 +216,6 @@ class _HomePageContentState extends State<HomePageContent> {
                       children: [
                         Stack(
                           children: [
-                            // dish.imageUrl
                             Image.network("${baseUrl}/photos-${dish.id}", width: double.infinity, height: 100, fit: BoxFit.cover),
                             Positioned(
                               top: 8,
@@ -287,7 +241,7 @@ class _HomePageContentState extends State<HomePageContent> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(dish.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                    Text('\$${dish.price}', style: TextStyle(fontSize: 14, color: Colors.green)),
+                                    Text('${dish.price} FCFA', style: TextStyle(fontSize: 14, color: Colors.green)),
                                   ],
                                 ),
                               ),
@@ -302,6 +256,13 @@ class _HomePageContentState extends State<HomePageContent> {
                                     // Handle add to favorites
                                   },
                                 ),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add_shopping_cart,
+                                  color: Colors.blue,
+                                ),
+                                onPressed: () => _addToCart(dish),
                               ),
                             ],
                           ),
@@ -324,7 +285,6 @@ class _HomePageContentState extends State<HomePageContent> {
               return Container(
                 margin: EdgeInsets.only(bottom: 8),
                   decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(12.0),
                     color: Color.fromARGB(255, 92, 195, 66),
                   ),
                 child: Container(
@@ -335,16 +295,18 @@ class _HomePageContentState extends State<HomePageContent> {
                   ),
                   child: ListTile(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(Plat: _searchResults[index]))),
-                    // tileColor: Colors.white,
-                    // ${baseUrl}/photos-${_searchResults[index].id}
                     leading: Image.network("${baseUrl}/photos-${_searchResults[index].id}"),
                     title: Text(_searchResults[index].name),
-                    subtitle: Text('\$${_searchResults[index].price}'),
+                    subtitle: Text('${_searchResults[index].price} FCFA'),
+                    // trailing: IconButton(
+                    //   icon: Icon(Icons.favorite_border, color: Color(favoriteColor)),
+                    //   onPressed: () {
+                    //     // Handle add to favorites
+                    //   },
+                    // ),
                     trailing: IconButton(
-                      icon: Icon(Icons.favorite_border, color: Color(favoriteColor)),
-                      onPressed: () {
-                        // Handle add to favorites
-                      },
+                      icon: Icon(Icons.add_shopping_cart, color: Colors.blue),
+                      onPressed: () => _addToCart(_searchResults[index]),
                     ),
                   ),
                 ),
@@ -371,4 +333,3 @@ class _HomePageContentState extends State<HomePageContent> {
   );
 }
 }
-

@@ -12,7 +12,7 @@ class CommandePage extends StatefulWidget {
 class _CommandePageState extends State<CommandePage> {
   @override
   Widget build(BuildContext context) {
-    int _selectedIndex = 0;
+    // int _selectedIndex = 0;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -41,7 +41,7 @@ class _CommandePageState extends State<CommandePage> {
             ],
             onTap: (index) {
               setState(() {
-                _selectedIndex = index;
+                // _selectedIndex = index;
               });
             },
           ),
