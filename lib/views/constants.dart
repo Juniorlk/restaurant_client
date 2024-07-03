@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-const String baseUrl = "http://192.168.75.219:80/api";
+const String baseUrl = "https://serveur-pfe.kesug.com/api";
 const int Timeout = 84600;
 
 const primaryColor = 0xFF1BAC4B;

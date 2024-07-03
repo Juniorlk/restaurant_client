@@ -22,17 +22,21 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       // print(_firstname + _lastname + _phone + _email + _password);
       // Implement your registration logic here using AuthService
-      bool success = await AuthService.register(_firstname, _lastname, _phone, _email, _password);
+      int success = await AuthService.register(_firstname, _lastname, _phone, _email, _password);
       setState(() {
         _isLoading = false;
       });
-      if (success) {
+      if (success == 200) {
         // Navigate to login or home page after successful registration
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
-      } else {
+      } else if (success == 401) {
         // Show an error message if registration fails
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Registration failed. Please try again.')),
+        );
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Center(child: Text('Server Down')), backgroundColor: Colors.red,)
         );
       }
     }

@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:foodapp/services/auth_service.dart';
-import 'package:foodapp/services/session_timeout_manager.dart';
-import 'package:foodapp/views/components/profile_icon.dart';
 import 'package:foodapp/views/components/profile_icon2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,9 +28,9 @@ class _ProfilePageState extends State<ProfilePage> {
     super.dispose();
   }
 
-  Future<void> _refresh() async {
-    await _loadUserData();
-  }
+  // Future<void> _refresh() async {
+  //   await _loadUserData();
+  // }
 
   Future<void> _loadUserData() async {
     try {

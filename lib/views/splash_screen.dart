@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodapp/views/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'onboarding_screen.dart';
 import 'home_page.dart';
