@@ -41,16 +41,20 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = true;
       });
       _formKey.currentState?.save();
-      bool success = await AuthService.login(_email, _password);
+      int success = await AuthService.login(_email, _password);
+      print(success);
       setState(() {
         _isLoading = false;
       });
-      if (success) {
+      if (success == 200) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
-      } else {
+      } else if(success == 401){
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Invalid credentials')));
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Center(child: Text('Server Down')), backgroundColor: Colors.red,));
       }
     }
   }

@@ -5,37 +5,43 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../views/constants.dart';
 
 class AuthService {
-  // static const String baseUrl = 'http://192.168.1.197:80/api';
-
-  static Future<bool> login(String email, String password) async {
+  static Future<int> login(String email, String password) async {
+    try {
       var data = {
         'AdresseMail': email,
         'MotDePasse': password,
       };
-    final response = await http.post(
-      Uri.parse('$baseUrl/login'),
-      headers: {
-        'Accept': 'application/json; charset=UTF-8',
-      },
-      body: data,
-    );
-    // print(response.statusCode);
-    // print(data);
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', data['access_token']);
-      await prefs.setBool('isLoggedIn', true);
-      await prefs.setString('client', jsonEncode(data['client']));
-      // print(data['client']);
-      return true;
-    } else {
-      debugPrint("pas bon");
-      return false;
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/login'),
+        headers: {
+          'Accept': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+
+      print(response.body);
+      print(data);
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', responseData['access_token']);
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString('client', jsonEncode(responseData['client']));
+        // print(responseData['client']);
+        return response.statusCode;
+      } else {
+        return 401;
+      }
+    } catch (e) {
+      return 2;
     }
   }
 
-  static Future<bool> register(String firstname,String lastname, String phone, String email, String password) async {
+  static Future<int> register(String firstname, String lastname, String phone, String email, String password) async {
+    try {
       var data = {
         "Nom": firstname,
         "Prenom": lastname,
@@ -43,22 +49,33 @@ class AuthService {
         "MotDePasse": password,
         "Telephone": phone,
       };
-      // print(data);
-    final response = await http.post(
-      Uri.parse('$baseUrl/register'),
-      headers: {
-        'Accept': 'application/json; charset=UTF-8',
-      },
-      body: data,
-    );
-    // print(response.statusCode);
 
-    return response.statusCode == 200;
+      final response = await http.post(
+        Uri.parse('$baseUrl/register'),
+        headers: {
+          'Accept': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+
+      print(response.body);
+      print(data);
+      response.statusCode == 200;
+
+      return response.statusCode;
+    } catch (e) {
+      return 2;
+    }
   }
 
   static Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    await prefs.setBool('isLoggedIn', false);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('token');
+      await prefs.setBool('isLoggedIn', false);
+    } catch (e) {
+      debugPrint("Logout exception: $e");
+    }
   }
 }

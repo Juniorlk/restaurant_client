@@ -150,7 +150,7 @@ class _HomePageContentState extends State<HomePageContent> {
   }
 
   Widget _buildBody() {
-  if (_categories.isEmpty || _promotions.isEmpty || _popularDishes.isEmpty) {
+  if (_categories.isEmpty || _popularDishes.isEmpty) {
     return Center(child: CircularProgressIndicator());
   }
 
@@ -204,77 +204,92 @@ class _HomePageContentState extends State<HomePageContent> {
           CategoryGrid(categories: _categories),
           SizedBox(height: 15),
           Text('Promotions', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          SizedBox(height: 6),
-          CarouselSlider(
-            options: CarouselOptions(height: 200.0),
-            items: _promotions.map((dish) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
+          _promotions.isNotEmpty ? Column(
+            children: [
+              SizedBox(height: 6),
+              CarouselSlider(
+                options: CarouselOptions(height: 200.0),
+                items: _promotions.map((dish) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.network("${baseUrl}/photos-${dish.id}", width: double.infinity, height: 100, fit: BoxFit.cover),
-                            Positioned(
-                              top: 8,
-                              left: 8,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  color: const Color(primaryColor),
+                            Stack(
+                              children: [
+                                Image.network("${baseUrl}/photos-${dish.id}", width: double.infinity, height: 100, fit: BoxFit.cover),
+                                Positioned(
+                                  top: 8,
+                                  left: 8,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: const Color(primaryColor),
+                                    ),
+                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    child: Text('Promo', style: TextStyle(color: Colors.white)),
+                                  ),
                                 ),
-                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                child: Text('Promo', style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(dish.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                        Text('${dish.price} FCFA', style: TextStyle(fontSize: 14, color: Colors.green)),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.favorite_border,
+                                        color: Color(favoriteColor),
+                                      ),
+                                      onPressed: () {
+                                        // Handle add to favorites
+                                      },
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.add_shopping_cart,
+                                      color: Colors.blue,
+                                    ),
+                                    onPressed: () => _addToCart(dish),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(dish.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                    Text('${dish.price} FCFA', style: TextStyle(fontSize: 14, color: Colors.green)),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.favorite_border,
-                                    color: Color(favoriteColor),
-                                  ),
-                                  onPressed: () {
-                                    // Handle add to favorites
-                                  },
-                                ),
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.add_shopping_cart,
-                                  color: Colors.blue,
-                                ),
-                                onPressed: () => _addToCart(dish),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   );
-                },
-              );
-            }).toList(),
+                }).toList(),
+              ),
+              SizedBox(height: 20),
+            ]
+          ) : Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Center(child: Text('Aucune Promotion')),
+                ],
+              ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 15),
           Text('Popular Dishes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
           ListView.builder(
