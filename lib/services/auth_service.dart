@@ -21,8 +21,8 @@ class AuthService {
         body: jsonEncode(data),
       );
 
-      print(response.body);
-      print(data);
+      // print(response.body);
+      // print(data);
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
@@ -59,8 +59,8 @@ class AuthService {
         body: jsonEncode(data),
       );
 
-      print(response.body);
-      print(data);
+      // print(response.body);
+      // print(data);
       response.statusCode == 200;
 
       return response.statusCode;
