@@ -5,6 +5,9 @@ import 'package:foodapp/services/auth_service.dart';
 import 'package:foodapp/views/components/profile_icon2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'commande_page_content.dart';
+import 'list_reservation_page.dart';
+
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -107,20 +110,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 ListTile(
                   leading: Icon(Icons.person),
-                  title: Text('Profile'),
+                  title: Text('Mes Commandes'),
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    // Naviguer vers la page "My Favorite"
-                    // Navigator.pushNamed(context, '/my-favorite');
+                    // Naviguer vers la page des commandes
+                    Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => CommandePage()));
                   },
                 ),
                 ListTile(
                   leading: Icon(Icons.notifications),
-                  title: Text('Notification'),
+                  title: Text('Mes reservations'),
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    // Naviguer vers la page "My Favorite"
-                    Navigator.pushNamed(context, '/my-favorite');
+                    // Naviguer vers la page des reservations
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ListReservationPage()));
                   },
                 ),
                 ListTile(
