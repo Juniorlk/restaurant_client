@@ -232,39 +232,48 @@ class _ReservationPageState extends State<ReservationPage> {
                   height: 35,
                 ),
                 if (_slots.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DropdownButton<int>(
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: TextStyle(color: const Color(primaryColor), fontSize: 16),
-                      underline: Container(
-                        height: 2,
-                        color: const Color(primaryColor),
-                        alignment: Alignment.centerLeft,
+                  Column(
+                    children: [
+                      Text('Choisir un creneau'),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButton<int>(
+                          icon: Icon(Icons.arrow_drop_down),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: TextStyle(color: const Color(primaryColor), fontSize: 16),
+                          underline: Container(
+                            height: 2,
+                            color: const Color(primaryColor),
+                            alignment: Alignment.centerLeft,
+                          ),
+                          isExpanded: true,
+                          value: _slots.any((slot) => slot['Id_Horaire'] == _selectedSlotId) ? _selectedSlotId : null,
+                          hint: Text('Sélectionner un créneau'),
+                          items: _slots.map((slot) {
+                            return DropdownMenuItem<int>(
+                              child: Text('${slot['Heure_debut']} - ${slot['Heure_fin']}'),
+                              value: slot['Id_Horaire'] as int,
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedSlotId = value;
+                              _tables = [];
+                              _selectedTableId = null;
+                            });
+                            if (value != null) {
+                              _loadTables(value, _numberOfPersons);
+                            }
+                          },
+                        ),
                       ),
-                      isExpanded: true,
-                      value: _slots.any((slot) => slot['Id_Horaire'] == _selectedSlotId) ? _selectedSlotId : null,
-                      hint: Text('Sélectionner un créneau'),
-                      items: _slots.map((slot) {
-                        return DropdownMenuItem<int>(
-                          child: Text('${slot['Heure_debut']} - ${slot['Heure_fin']}'),
-                          value: slot['Id_Horaire'] as int,
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedSlotId = value;
-                          _tables = [];
-                          _selectedTableId = null;
-                        });
-                        if (value != null) {
-                          _loadTables(value, _numberOfPersons);
-                        }
-                      },
-                    ),
+                    ],
+                  )else(
+                  Text('Aucune Creneau disponible pour le moment')
                   ),
+
                 TextField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(

@@ -39,7 +39,7 @@ class OrderItem extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 8),
-                    Text('12 articles - 1 km'),
+                    // Text('12 articles - 1 km'),
                     SizedBox(height: 8),
                     Text('\$$price'),
                   ],
