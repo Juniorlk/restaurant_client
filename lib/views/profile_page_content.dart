@@ -187,6 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
+// ignore: must_be_immutable
 class UserProfileHeader extends StatelessWidget {
   final userName;
   final telephone;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/views/home_page.dart';
 import 'register_page.dart';
-import '../services/auth_service.dart';
+import '../../services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override

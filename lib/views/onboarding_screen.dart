@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/views/constants.dart';
 import './widgets/onboarding_page.dart';
-import './login_page.dart';
+import 'auth/login_page.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override

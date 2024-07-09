@@ -2,7 +2,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../views/constants.dart';
-import 'package:foodapp/views/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

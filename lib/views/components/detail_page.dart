@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/models/plat_model.dart';
 
-import 'constants.dart';
+import '../constants.dart';
 
 class DetailPage extends StatelessWidget {
   final Dish Plat;
