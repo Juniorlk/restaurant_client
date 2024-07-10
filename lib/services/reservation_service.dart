@@ -38,7 +38,7 @@ class ReservationService {
       throw Exception('Failed to create reservation');
     }
   }
-
+  
   Future<List<dynamic>> getReservationsByClient() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? clientData = prefs.getString('client');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodapp/views/constants.dart';
 import 'package:foodapp/views/home_page_content.dart';
 import 'package:lottie/lottie.dart';
 
@@ -28,7 +29,7 @@ class _SuccessReservationState extends State<SuccessReservation> {
           children: <Widget>[
             Expanded(
               flex: 3,
-              child: Lottie.asset('images/success.json'),
+              child: Lottie.asset('assets/success.json'),
             ),
             Container(
               width: double.infinity,
@@ -49,7 +50,7 @@ class _SuccessReservationState extends State<SuccessReservation> {
                 width: double.infinity,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255,255, 92, 0),
+                      backgroundColor: const Color(primaryColor),
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
@@ -64,12 +65,12 @@ class _SuccessReservationState extends State<SuccessReservation> {
                     },
                     // width: double.infinity,
                     child: const Padding(
-                      padding: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(10.0),
                       child: Text(
                         'Back to Home Page',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 25,
+                          fontSize: 20,
                         ),
                       ),
                     )

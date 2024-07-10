@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:foodapp/services/auth_service.dart';
 import 'package:foodapp/views/components/profile_icon2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:foodapp/accessoires_profile/favoris.dart';
 
 import 'commande_page_content.dart';
 import 'list_reservation_page.dart';
@@ -89,7 +90,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
                     // Naviguer vers la page "My Favorite"
-                    // Navigator.pushNamed(context, '/favoris');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FavoriteDishesPage()),
+                       );
                   },
                 ),
                 ListTile(

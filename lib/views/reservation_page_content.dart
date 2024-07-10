@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:foodapp/views/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/reservation_service.dart';
+import 'components/success_reservation.dart';
 import 'list_reservation_page.dart';
 
 class ReservationPage extends StatefulWidget {
@@ -92,7 +93,6 @@ class _ReservationPageState extends State<ReservationPage> {
         'Nombre_personnes': _numberOfPersons,
         'Statut': 'En attente',
       };
-
       await _reservationService.createReservation(reservationData);
 
 
@@ -111,6 +111,10 @@ class _ReservationPageState extends State<ReservationPage> {
           ),
         content: Text('Réservation effectuée avec succès !'),
       ));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SuccessReservation()),
+      );
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
