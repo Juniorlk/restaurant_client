@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../views/constants.dart';
 
 class OrderService {
@@ -29,7 +30,19 @@ class OrderService {
       body: data
     );
 
-    if (response.statusCode != 201) {
+    if (response.statusCode == 201) {
+
+
+    // Lancer l'URL pour le paiement
+    final paymentUrl = 'http://paiement.wuaze.com/examples/example1.php?montant=2&tel=650505050&reservation=1&prenom=lk&nom=lk';
+    
+    if (!await launchUrl(
+      Uri.parse(paymentUrl),
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch');
+    }
+    }else{
       throw Exception('Échec de la création de la commande');
     }
   }

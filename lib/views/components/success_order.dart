@@ -4,14 +4,14 @@ import 'package:foodapp/views/home_page_content.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SuccessReservation extends StatefulWidget {
-  const SuccessReservation({Key? key}) : super(key: key);
+class SuccessOrder extends StatefulWidget {
+  const SuccessOrder({Key? key}) : super(key: key);
 
   @override
-  State<SuccessReservation> createState() => _SuccessReservationState();
+  State<SuccessOrder> createState() => _SuccessOrderState();
 }
 
-class _SuccessReservationState extends State<SuccessReservation> {
+class _SuccessOrderState extends State<SuccessOrder> {
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,7 @@ class _SuccessReservationState extends State<SuccessReservation> {
               width: double.infinity,
               alignment: Alignment.center,
               child: const Text(
-                'Successfully Reservation',
+                'Successfully Order',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

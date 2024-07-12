@@ -64,4 +64,9 @@ class CartService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('cart'); // Supposons que 'cartItems' est la clé utilisée pour stocker les éléments du panier
   }
+
+  Future<int> getCartItemCount() async {
+    List<CartItem> cart = await getCartItems();
+    return cart.length;
+  }
 }

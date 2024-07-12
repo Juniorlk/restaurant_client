@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/cart_service.dart';
 import '../services/order_service.dart';
 import '../models/cart_item_model.dart';
+import 'components/success_order.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -61,6 +62,10 @@ class _CartPageState extends State<CartPage> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Commande passée avec succès !'),
       ));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SuccessOrder()),
+      );
     } catch (e) {
       // Show error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

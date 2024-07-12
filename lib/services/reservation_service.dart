@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../views/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class ReservationService {
@@ -26,18 +27,40 @@ class ReservationService {
     }
   }
 
-  Future<void> createReservation(Map<String, dynamic> reservationData) async {
-    // print(reservationData);
-    final response = await http.post(
-      Uri.parse('$baseUrl/reservations'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(reservationData),
-    );
 
-    if (response.statusCode != 201) {
-      throw Exception('Failed to create reservation');
+Future<void> createReservation(Map<String, dynamic> reservationData) async {
+  // Créez la réservation
+  final response = await http.post(
+    Uri.parse('$baseUrl/reservations'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode(reservationData),
+  );
+
+  if (response.statusCode == 201) {
+    // Si la création de la réservation a réussi, récupérez l'ID de la réservation
+    final responseData = jsonDecode(response.body);
+    // print('responseData: $responseData');
+    final reservationId = responseData['reservation']['Id_Reservation'];
+    // print(responseData['client']['Telephone']);
+    final montant = 1;
+    final tel = responseData['client']['Telephone'];
+    final prenom = responseData['client']['Prenom'];
+    final nom = responseData['client']['Nom'];
+    // print('reservationId: $reservationId');
+
+    // Lancer l'URL pour le paiement
+    final paymentUrl = 'http://paiement.wuaze.com/examples/example1.php?montant=${montant}&tel=${tel}&reservation=${reservationId}&prenom=${prenom}&nom=${nom}';
+    
+    if (!await launchUrl(
+      Uri.parse(paymentUrl),
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch');
     }
+  } else {
+    throw Exception('Failed to create reservation');
   }
+}
   
   Future<List<dynamic>> getReservationsByClient() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
